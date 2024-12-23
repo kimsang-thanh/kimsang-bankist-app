@@ -132,7 +132,6 @@ let currentAccount;
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
   e.preventDefault();
-  console.log('LOGIN');
 
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value
