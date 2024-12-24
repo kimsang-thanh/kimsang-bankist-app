@@ -67,12 +67,15 @@ const displayMovements = function (movements, sort = false) {
   const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
 
   movs.forEach((mov, i) => {
+    const dollarSign = mov < 0 ? '-$' : '$';
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
                     <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-                    <div class="movements__value">${mov}€</div>
+                    <div class="movements__value">${dollarSign}${Math.abs(
+      mov
+    )}</div>
                   </div>
                 `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -81,26 +84,26 @@ const displayMovements = function (movements, sort = false) {
 
 const calDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+  labelBalance.textContent = `$${acc.balance}`;
 };
 
 const calDisplaySummery = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes}€`;
+  labelSumIn.textContent = `$${incomes}`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = `$${Math.abs(out)}`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
     .map(deposit => (deposit * acc.interestRate) / 100)
     .filter((int, i, arr) => int >= 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = `$${interest}`;
 };
 
 const createUsernames = function (accs) {
